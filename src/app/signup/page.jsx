@@ -12,7 +12,9 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
+import { FcGoogle } from "react-icons/fc";
 
 const SignUpPage = () => {
   const onSumit = async (e) => {
@@ -32,6 +34,12 @@ const SignUpPage = () => {
     if (error) {
       alert(error.message);
     }
+  };
+
+  const handleGoogleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
   };
 
   return (
@@ -103,6 +111,25 @@ const SignUpPage = () => {
             </Button>
           </div>
         </Form>
+        <div className="text-center">Or</div>
+        <div>
+          <Button
+            onClick={handleGoogleSignIn}
+            variant=""
+            className="w-full border border-gray-300 hover:bg-gray-100"
+          >
+            <FcGoogle /> Connect with Google
+          </Button>
+          <div className="mt-4 text-center">
+            {" "}
+            <Link
+              href="/login"
+              className="text-sm text-gray-500 hover:text-gray-700"
+            >
+              Already have an account? Log in
+            </Link>
+          </div>
+        </div>
       </Card>
     </div>
   );
