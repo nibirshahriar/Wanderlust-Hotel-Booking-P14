@@ -1,3 +1,4 @@
+import BookingCard from "@/components/BookingCard";
 import { DeleteDialog } from "@/components/DeleteDialog";
 import { EditModal } from "@/components/EditModal";
 import { Button } from "@heroui/react";
@@ -123,40 +124,7 @@ const DestinationDetailPage = async ({ params }) => {
         </div>
 
         {/* Right Sidebar */}
-        <div>
-          <div className="rounded-lg border bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500">Starting from</p>
-
-            <h2 className="text-4xl font-bold text-cyan-600">${price}</h2>
-
-            <p className="mb-6 text-sm text-gray-500">per person</p>
-
-            <div className="mb-6 rounded border bg-gray-50 p-3 text-sm">
-              {departureDate}
-            </div>
-
-            <button className="mb-6 w-full rounded bg-cyan-500 py-3 font-medium text-white hover:bg-cyan-600">
-              Book Now →
-            </button>
-
-            <div className="space-y-3 text-sm text-gray-600">
-              <div className="flex items-center gap-2">
-                <FaCheck className="text-green-500" />
-                <span>Free cancellation up to 7 days</span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <FaCheck className="text-green-500" />
-                <span>Travel insurance included</span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <FaCheck className="text-green-500" />
-                <span>24/7 customer support</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <BookingCard destination={destination} />
       </div>
     </div>
   );
