@@ -3,6 +3,7 @@ import { authClient } from "@/lib/auth-client";
 import { Button, DateField, Label } from "@heroui/react";
 import React, { useState } from "react";
 import { FaCheck } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const BookingCard = ({ destination }) => {
   const { data: session, isPending, error, refetch } = authClient.useSession();
@@ -26,6 +27,17 @@ const BookingCard = ({ destination }) => {
       departureDate: new Date(departureDate),
     };
     // console.log("Booking Data:", bookingData);
+
+    const res = await fetch("http://localhost:5000/bookings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bookingData),
+    });
+    const data = await res.json();
+    // console.log("Booking Response:", data);
+    toast.success("Booking successful!");
   };
   return (
     <div>
