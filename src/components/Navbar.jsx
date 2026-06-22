@@ -26,8 +26,11 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link href="/admin" className="transition hover:text-blue-600">
-              Admin
+            <Link
+              href="/add-destination"
+              className="transition hover:text-blue-600"
+            >
+              Add Destination
             </Link>
           </li>
         </ul>
