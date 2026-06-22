@@ -4,7 +4,8 @@ import { FaMapMarkerAlt, FaRegClock, FaStar } from "react-icons/fa";
 import { FiArrowUpRight } from "react-icons/fi"; // Better match for the arrow in your mockup
 
 const DestinationCard = ({ destination }) => {
-  const { destinationName, country, price, duration, imageUrl } = destination;
+  const { _id, destinationName, country, price, duration, imageUrl } =
+    destination;
 
   return (
     <div className="group overflow-hidden bg-white transition-all duration-300">
@@ -61,7 +62,7 @@ const DestinationCard = ({ destination }) => {
         {/* Action Link */}
         <div className="mt-4 border-t border-gray-100 pt-3">
           <Link
-            href={`/destinations/${destination?._id}`}
+            href={`/destinations/${_id}`}
             className="inline-flex items-center gap-0.5 text-xs font-bold text-cyan-500 tracking-wide transition hover:text-cyan-600"
           >
             BOOK NOW
