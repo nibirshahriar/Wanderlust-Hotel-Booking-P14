@@ -1,3 +1,4 @@
+import { DeleteDialog } from "@/components/DeleteDialog";
 import { EditModal } from "@/components/EditModal";
 import { Button } from "@heroui/react";
 import Image from "next/image";
@@ -37,12 +38,8 @@ const DestinationDetailPage = async ({ params }) => {
         <div className="flex gap-3">
           {/* <button className="rounded border px-4 py-2 text-sm">✏ Edit</button> */}
           <EditModal destination={destination} />
-          <Button
-            variant=""
-            className="rounded border border-red-300 px-4 py-2 text-sm text-red-500"
-          >
-            🗑 Cancel
-          </Button>
+
+          <DeleteDialog destination={destination} />
         </div>
       </div>
 
