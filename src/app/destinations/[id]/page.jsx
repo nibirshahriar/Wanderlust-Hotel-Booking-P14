@@ -1,4 +1,7 @@
+import { EditModal } from "@/components/EditModal";
+import { Button } from "@heroui/react";
 import Image from "next/image";
+import Link from "next/link";
 import { FaMapMarkerAlt, FaStar, FaCalendarAlt, FaCheck } from "react-icons/fa";
 
 const DestinationDetailPage = async ({ params }) => {
@@ -18,22 +21,28 @@ const DestinationDetailPage = async ({ params }) => {
     departureDate,
     imageUrl,
     description,
+    category,
   } = destination;
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
       {/* Back + Actions */}
       <div className="mb-6 flex items-center justify-between">
-        <button className="text-sm text-gray-600 hover:text-black">
-          ← Back to Destinations
-        </button>
+        <Link href="/destinations">
+          <button className="text-sm text-gray-600 hover:text-black">
+            ← Back to Destinations
+          </button>
+        </Link>
 
         <div className="flex gap-3">
-          <button className="rounded border px-4 py-2 text-sm">✏ Edit</button>
-
-          <button className="rounded border border-red-300 px-4 py-2 text-sm text-red-500">
+          {/* <button className="rounded border px-4 py-2 text-sm">✏ Edit</button> */}
+          <EditModal destination={destination} />
+          <Button
+            variant=""
+            className="rounded border border-red-300 px-4 py-2 text-sm text-red-500"
+          >
             🗑 Cancel
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -45,6 +54,13 @@ const DestinationDetailPage = async ({ params }) => {
           fill
           className="object-cover"
         />
+
+        {/* Category Badge */}
+        <div className="absolute left-5 top-5">
+          <span className="rounded-full bg-cyan-500 px-4 py-2 text-sm font-semibold text-white shadow-lg">
+            {category}
+          </span>
+        </div>
       </div>
 
       <div className="grid gap-10 lg:grid-cols-3">
@@ -65,7 +81,7 @@ const DestinationDetailPage = async ({ params }) => {
 
             <div className="flex items-center gap-2">
               <FaCalendarAlt />
-              <span>{duration}</span>
+              <span>{duration} Days</span>
             </div>
           </div>
 
