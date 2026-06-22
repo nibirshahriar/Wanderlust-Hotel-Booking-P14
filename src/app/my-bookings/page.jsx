@@ -1,9 +1,10 @@
+import { BookingCancelAlert } from "@/components/BookingCancelAlert";
 import { auth } from "@/lib/auth";
 import { Button } from "@heroui/react";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
-import { FaCalendarAlt, FaEye, FaTimes } from "react-icons/fa";
+import { FaCalendarAlt, FaEye, FaSuitcaseRolling } from "react-icons/fa";
 
 const MyBookingsPage = async () => {
   const session = await auth.api.getSession({
@@ -18,6 +19,35 @@ const MyBookingsPage = async () => {
 
   const bookings = await res.json();
 
+  // Empty State
+  if (!bookings?.length) {
+    return (
+      <div className="container mx-auto flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
+        <div className="mb-6 rounded-full bg-cyan-100 p-8">
+          <FaSuitcaseRolling className="text-6xl text-cyan-500" />
+        </div>
+
+        <h1 className="mb-3 text-4xl font-bold text-gray-800">
+          No Bookings Yet
+        </h1>
+
+        <p className="mb-8 max-w-lg text-lg text-gray-500">
+          You havent booked any travel destinations yet. Discover breathtaking
+          places and start planning your next adventure.
+        </p>
+
+        <Link href="/destinations">
+          <Button
+            className="bg-cyan-500 px-8 text-white hover:bg-cyan-600"
+            size="lg"
+          >
+            Explore Destinations
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-10">
       <h1 className="mb-2 text-4xl font-bold">My Bookings</h1>
@@ -30,11 +60,11 @@ const MyBookingsPage = async () => {
         {bookings.map((booking) => (
           <div
             key={booking._id}
-            className="flex flex-col gap-4 rounded-lg border bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between"
+            className="flex flex-col gap-4 rounded-lg border bg-white p-4 shadow-sm transition hover:shadow-md md:flex-row md:items-center md:justify-between"
           >
-            {/* Left */}
-            <div className="flex gap-4">
-              <div className="relative h-28 w-40 overflow-hidden rounded">
+            {/* Left Section */}
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <div className="relative h-32 w-full overflow-hidden rounded-lg sm:w-48">
                 <Image
                   src={booking.imageUrl}
                   alt={booking.destinationName}
@@ -45,7 +75,7 @@ const MyBookingsPage = async () => {
 
               <div>
                 <span
-                  className={`mb-2 inline-block rounded-full px-2 py-1 text-xs ${
+                  className={`mb-2 inline-block rounded-full px-3 py-1 text-xs font-medium ${
                     booking.status === "confirmed"
                       ? "bg-green-100 text-green-700"
                       : "bg-yellow-100 text-yellow-700"
@@ -54,7 +84,7 @@ const MyBookingsPage = async () => {
                   {booking.status}
                 </span>
 
-                <h3 className="text-2xl font-medium">
+                <h3 className="text-2xl font-semibold text-gray-800">
                   {booking.destinationName}
                 </h3>
 
@@ -63,29 +93,23 @@ const MyBookingsPage = async () => {
                   <span>Departure: {booking.departureDate}</span>
                 </div>
 
-                <div className="mt-2 text-sm text-gray-500">
+                <div className="mt-1 text-sm text-gray-500">
                   Booking ID: {booking._id}
                 </div>
 
-                <p className="mt-2 text-3xl font-bold text-cyan-500">
+                <p className="mt-3 text-3xl font-bold text-cyan-500">
                   ${booking.price}
                 </p>
               </div>
             </div>
 
-            {/* Right */}
+            {/* Right Section */}
             <div className="flex gap-3">
-              <Button
-                variant="bordered"
-                className="flex items-center gap-2 rounded border border-red-300 px-4 py-2 text-red-500 hover:bg-red-50"
-              >
-                <FaTimes />
-                Cancel
-              </Button>
+              <BookingCancelAlert bookingId={booking._id} />
 
               <Link
                 href={`/destinations/${booking.destinationId}`}
-                className="flex items-center gap-2 rounded bg-cyan-500 px-4 py-2 text-white hover:bg-cyan-600"
+                className="flex items-center gap-2 rounded bg-cyan-500 px-4 py-2 text-white transition hover:bg-cyan-600"
               >
                 <FaEye />
                 View
