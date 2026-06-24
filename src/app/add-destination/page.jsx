@@ -11,6 +11,7 @@ import {
   Select,
   ListBox,
 } from "@heroui/react";
+import { authClient } from "@/lib/auth-client";
 
 const AddDestinationPage = () => {
   //   const isPending = false;
@@ -20,10 +21,13 @@ const AddDestinationPage = () => {
     const data = Object.fromEntries(formData.entries());
     console.log(data);
 
+    const { data: tokenData } = await authClient.token();
+
     const response = await fetch("http://localhost:5000/destinations", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${tokenData?.token}`,
       },
       body: JSON.stringify(data),
     });

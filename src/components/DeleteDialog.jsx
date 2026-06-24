@@ -1,5 +1,6 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { AlertDialog, Button } from "@heroui/react";
 import { redirect } from "next/navigation";
 import { MdDelete } from "react-icons/md";
@@ -8,10 +9,13 @@ export function DeleteDialog({ destination }) {
   const { _id, destinationName } = destination;
 
   const handleDelete = async () => {
+    const { data: tokenData } = await authClient.token();
+
     const response = await fetch(`http://localhost:5000/destinations/${_id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${tokenData?.token}`,
       },
     });
     const result = await response.json();
