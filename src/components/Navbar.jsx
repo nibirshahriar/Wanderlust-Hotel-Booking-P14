@@ -1,18 +1,21 @@
 "use client";
+
+import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, Button } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 
 const Navbar = () => {
-  const { data: session, isPending, error, refetch } = authClient.useSession();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { data: session } = authClient.useSession();
 
   const user = session?.user;
-  //   console.log(user);
 
   const handleLogout = async () => {
     await authClient.signOut();
-    // refetch();
+    setIsOpen(false);
   };
 
   return (
@@ -25,6 +28,7 @@ const Navbar = () => {
               Home
             </Link>
           </li>
+
           <li>
             <Link
               href="/destinations"
@@ -33,6 +37,7 @@ const Navbar = () => {
               Destinations
             </Link>
           </li>
+
           <li>
             <Link
               href="/my-bookings"
@@ -41,6 +46,7 @@ const Navbar = () => {
               My Bookings
             </Link>
           </li>
+
           <li>
             <Link
               href="/add-destination"
@@ -54,7 +60,7 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex-shrink-0">
           <Image
-            src={"/assets/wanderlast.png"}
+            src="/assets/Wanderlast.png"
             alt="Wanderlust Logo"
             width={130}
             height={60}
@@ -69,6 +75,7 @@ const Navbar = () => {
               Profile
             </Link>
           </li>
+
           {user ? (
             <>
               <li>
@@ -77,6 +84,7 @@ const Navbar = () => {
                   <Avatar.Fallback>{user?.name?.charAt(0)}</Avatar.Fallback>
                 </Avatar>
               </li>
+
               <li>
                 <Button
                   className="bg-red-500 text-white hover:bg-red-600"
@@ -104,9 +112,88 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile Menu Button */}
-        <button className="md:hidden text-2xl">☰</button>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden text-3xl"
+        >
+          {isOpen ? "✕" : "☰"}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden border-t bg-white px-6 py-4 shadow-lg">
+          <ul className="flex flex-col gap-4 font-medium text-gray-700">
+            <li>
+              <Link href="/" onClick={() => setIsOpen(false)}>
+                Home
+              </Link>
+            </li>
+
+            <li>
+              <Link href="/destinations" onClick={() => setIsOpen(false)}>
+                Destinations
+              </Link>
+            </li>
+
+            <li>
+              <Link href="/my-bookings" onClick={() => setIsOpen(false)}>
+                My Bookings
+              </Link>
+            </li>
+
+            <li>
+              <Link href="/add-destination" onClick={() => setIsOpen(false)}>
+                Add Destination
+              </Link>
+            </li>
+
+            <li>
+              <Link href="/profile" onClick={() => setIsOpen(false)}>
+                Profile
+              </Link>
+            </li>
+
+            {user ? (
+              <>
+                <li className="flex items-center gap-3">
+                  <Avatar referrerPolicy="no-referrer">
+                    <Avatar.Image alt={user?.name} src={user?.image} />
+                    <Avatar.Fallback>{user?.name?.charAt(0)}</Avatar.Fallback>
+                  </Avatar>
+
+                  <span>{user?.name}</span>
+                </li>
+
+                <li>
+                  <Button
+                    className="w-full bg-red-500 text-white hover:bg-red-600"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link href="/login" onClick={() => setIsOpen(false)}>
+                    Login
+                  </Link>
+                </li>
+
+                <li>
+                  <Link href="/signup" onClick={() => setIsOpen(false)}>
+                    Sign Up
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 };
+
 export default Navbar;
